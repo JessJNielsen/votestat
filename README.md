@@ -1,6 +1,9 @@
 # VoteStat
+Vote Statistics and Analysis
 
-Tool for downloading and parsing voting data for danish elections.
+With this tool you can download data from KMD. 
+
+Then you can either do simple analysis or export it for more detailed analysis.
 
 ## Terms
 
