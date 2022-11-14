@@ -1,21 +1,20 @@
+use std::env;
 use sqlx::migrate::{MigrateDatabase};
 use sqlx::{migrate, Pool, Sqlite, SqlitePool};
 
-const DB_PATH: &'static str = "./storage/votestat.db";
-
-/// Connects to the database. If no database exists, one is created.
+/// Initialized the database. If no database exists, one is created.
 ///
 /// Then it runs all migrations in ./migrations.
 pub async fn initialize() -> Result<(), Box<dyn std::error::Error>> {
     // Create the database if not exists
-    let db_url = db_url();
+    let db_url = env::var("DATABASE_URL").expect("DATABASE_URL not set");
 
     if !Sqlite::database_exists(&db_url).await? {
         Sqlite::create_database(&db_url).await?;
     }
 
     // Connect to the database
-    let sqlite_pool = connect().await;
+    let sqlite_pool = connect_database().await;
 
     // Migrate the database
     migrate!().run(&sqlite_pool).await?;
@@ -23,39 +22,10 @@ pub async fn initialize() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn db_url() -> String {
-    format!("sqlite:{}", DB_PATH)
+/// Connects to the database.
+pub async fn connect_database() -> Pool<Sqlite> {
+    SqlitePool::connect(
+        env::var("DATABASE_URL").unwrap().as_str()
+    ).await.unwrap()
 }
-
-async fn connect() -> Pool<Sqlite> {
-    SqlitePool::connect(&db_url()).await.unwrap()
-}
-
-// Plan
-
-// Table and entities to make
-
-// Party
-    // has id and name of party
-
-// Super District
-    // has id and name
-
-// District
-    // has id and name and id of super district
-
-// Voting Center
-    // has id and name and id of district
-
-// Candidate
-    // has id and name and id of party
-
-// IndependentCandidate
-    // Same as a party but only in one super district
-
-// PartyVotesVotingCentre
-    // Each row has id of party and of voting centre and amount of votes
-
-// CandidateVotesVotingCentre
-    // Each row has id of candidate and of voting centre and amount of votes
 

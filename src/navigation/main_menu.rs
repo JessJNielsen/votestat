@@ -7,6 +7,12 @@ pub enum MainMenuOption {
     Analyze,
 }
 
+impl MainMenuOption {
+    pub fn parse_selection(selection: &str) -> Result<MainMenuOption, ()> {
+        MainMenuOption::from_str(selection)
+    }
+}
+
 impl FromStr for MainMenuOption {
     type Err = ();
 
@@ -18,8 +24,4 @@ impl FromStr for MainMenuOption {
             _      => Err(()),
         }
     }
-}
-
-pub fn parse_selection(selection: &str) -> Result<MainMenuOption, ()> {
-    MainMenuOption::from_str(selection)
 }

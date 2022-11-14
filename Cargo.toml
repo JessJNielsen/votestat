@@ -12,5 +12,9 @@ scraper = "0.13.0"
 inquire = "0.5.2"
 sqlx = { version = "0.6", features = [
     "runtime-tokio-rustls",
-    "sqlite"
+    "sqlite",
+    "chrono"
 ] }
+anyhow = "1.0"
+dotenvy = "0.15"
+chrono = "0.4"

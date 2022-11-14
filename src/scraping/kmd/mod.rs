@@ -1,29 +1,39 @@
 use std::error::{Error};
 use scraper::{Html, Selector};
-use crate::models::{District, SuperDistrict};
+use crate::models::{District, SuperDistrictEntity, SuperDistrictInput};
 use crate::scraping::download::download;
 
 pub async fn scrape() -> Result<(), Box<dyn Error>> {
     println!("Initializing scraping for KMD data.. \n");
 
-    scrape_main_page().await
-}
+    let super_districts: Vec<SuperDistrictInput> = scrape_main_page().await;
 
-async fn scrape_main_page() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Scraping KMD Main Page");
+    for super_district in super_districts.iter() {
+        SuperDistrictEntity::insert(super_district)
+            .await
+            .expect("Failed to insert Super District");
 
-    let result = download("https://kmdvalg.dk/Main").await?;
+        // for sub_district in super_district.sub_districts {
+        //
+        // }
+    }
 
-    let document: &str = result.as_str();
-
-    let list = parse_main_page(document);
-
-    println!("links: {:#?}", list);
+    println!("Created {} new super districts", super_districts.len());
 
     Ok(())
 }
 
-fn parse_main_page(document: &str) -> Vec<SuperDistrict> {
+async fn scrape_main_page() -> Vec<SuperDistrictInput> {
+    println!("Scraping KMD Main Page");
+
+    let result = download("https://kmdvalg.dk/Main")
+        .await
+        .expect("Failed to scrape KMD main page");
+
+    parse_main_page(result.as_str())
+}
+
+fn parse_main_page(document: &str) -> Vec<SuperDistrictInput> {
     let parsed_html = Html::parse_document(document);
 
     // Grab Super Districts list from front page
@@ -31,8 +41,8 @@ fn parse_main_page(document: &str) -> Vec<SuperDistrict> {
     let district_lists = parsed_html.select(&district_lists_selector).collect::<Vec<_>>();
 
     // Map each list to SuperDistrict -> District strcuts
-    let selector_title = Selector::parse("div.list-group-item").unwrap();
-    let selector_href = Selector::parse("a.list-group-item").unwrap();
+    let selector_title = Selector::parse("div.list-group-item").expect("Failed to parse selector");
+    let selector_href = Selector::parse("a.list-group-item").expect("Failed to parse selector");
 
     district_lists
         .into_iter()
@@ -47,7 +57,7 @@ fn parse_main_page(document: &str) -> Vec<SuperDistrict> {
                 .select(&selector_href)
                 .collect::<Vec<_>>();
 
-            SuperDistrict {
+            SuperDistrictInput {
                 name: element_title.to_string(),
                 sub_districts: element_links
                     .into_iter()
@@ -59,5 +69,5 @@ fn parse_main_page(document: &str) -> Vec<SuperDistrict> {
                     }).collect::<Vec<District>>()
             }
         })
-        .collect::<Vec<SuperDistrict>>()
+        .collect::<Vec<SuperDistrictInput>>()
 }

@@ -3,14 +3,14 @@ mod database;
 mod navigation;
 mod scraping;
 
-use std::env;
-use inquire::{InquireError, Select};
-use crate::navigation::main_menu::{MainMenuOption, parse_selection};
+use dotenvy::dotenv;
+use inquire::Select;
+use crate::navigation::main_menu::{MainMenuOption};
 use crate::scraping::kmd::scrape;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    env::set_var("RUST_BACKTRACE", "1");
+async fn main() -> anyhow::Result<()> {
+    dotenv().ok();
 
     println!("\
         VoteStat - Vote Statistics and Analysis \n\n\
@@ -22,10 +22,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let options: Vec<&str> = vec!["Scrape", "Read", "Export"];
 
-    let selection: Result<&str, InquireError> = Select::new("To get started, please choose an option", options).prompt();
+    let selection = Select::new("To get started, please choose an option", options).prompt();
 
     let selected_main_menu_option = match selection {
-        Ok(ans) => parse_selection(ans),
+        Ok(ans) => MainMenuOption::parse_selection(ans),
         Err(_) => Err(println!("There was an error with your selection, please try again.")),
     };
 
