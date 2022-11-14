@@ -3,22 +3,22 @@ mod database;
 mod navigation;
 mod scraping;
 
+use std::env;
 use inquire::{InquireError, Select};
 use crate::navigation::main_menu::{MainMenuOption, parse_selection};
 use crate::scraping::kmd::scrape;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    env::set_var("RUST_BACKTRACE", "1");
+
     println!("\
         VoteStat - Vote Statistics and Analysis \n\n\
         With this tool you can download data from KMD. \n\
         Then you can either do simple analysis or export it for more detailed analysis.
     ");
 
-    database::initialize_database()
-        .await
-        .expect("Failed to initialize database");
-
+    database::initialize().await.expect("Could not connect and migrate DB");
 
     let options: Vec<&str> = vec!["Scrape", "Read", "Export"];
 
