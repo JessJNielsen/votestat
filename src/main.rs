@@ -12,11 +12,12 @@ use crate::scraping::kmd::scrape;
 async fn main() -> anyhow::Result<()> {
     dotenv().ok();
 
-    println!("\
-        VoteStat - Vote Statistics and Analysis \n\n\
-        With this tool you can download data from KMD. \n\
-        Then you can either do simple analysis or export it for more detailed analysis.
-    ");
+    println!(r#"
+VoteStat - Vote Statistics and Analysis
+
+With this tool you can download data from KMD.
+Then you can either do simple analysis or export it for more detailed analysis.
+    "#);
 
     database::initialize().await.expect("Could not connect and migrate DB");
 

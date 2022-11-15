@@ -38,7 +38,7 @@ fn parse_main_page(document: &str) -> Vec<SuperDistrictInput> {
 
     // Grab Super Districts list from front page
     let district_lists_selector = Selector::parse("body .kmd-list-items .list-group").unwrap();
-    let district_lists = parsed_html.select(&district_lists_selector).collect::<Vec<_>>();
+    let district_lists = parsed_html.select(&district_lists_selector);
 
     // Map each list to SuperDistrict -> District strcuts
     let selector_title = Selector::parse("div.list-group-item").expect("Failed to parse selector");
@@ -50,12 +50,11 @@ fn parse_main_page(document: &str) -> Vec<SuperDistrictInput> {
             let element_title = element
                 .select(&selector_title)
                 .next()
-                .and_then(|n| n.text().nth(0))
+                .and_then(|n| n.text().next())
                 .unwrap_or("Title not found");
 
             let element_links = element
-                .select(&selector_href)
-                .collect::<Vec<_>>();
+                .select(&selector_href);
 
             SuperDistrictInput {
                 name: element_title.to_string(),
