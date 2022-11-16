@@ -1,15 +1,17 @@
 # VoteStat
+
 Vote Statistics and Analysis
 
 With this tool you can download data from KMD.  
 Then you can either do simple analysis or export it for more detailed analysis.
 
 ## Structure
+
 The project has been split into smaller library crates:
 
- - `dal` - Database and Models, anything that uses `sqlx`
- - `scraping` - Scraping function in VoteStat cli. Includes KMD logic.
- - `votestat` - The main CLI application
+- `dal` - Database and Models, anything that uses `sqlx`
+- `scraping` - Scraping function in VoteStat cli. Includes KMD logic.
+- `votestat` - The main CLI application
 
 ## Terms
 

@@ -1,5 +1,6 @@
 use std::env;
-use sqlx::migrate::{MigrateDatabase};
+
+use sqlx::migrate::MigrateDatabase;
 use sqlx::{migrate, Pool, Sqlite, SqlitePool};
 
 /// Initialized the database. If no database exists, one is created.
@@ -24,8 +25,7 @@ pub async fn initialize() -> Result<(), Box<dyn std::error::Error>> {
 
 /// Connects to the database.
 pub async fn connect_database() -> Pool<Sqlite> {
-    SqlitePool::connect(
-        env::var("DATABASE_URL").unwrap().as_str()
-    ).await.unwrap()
+    SqlitePool::connect(env::var("DATABASE_URL").unwrap().as_str())
+        .await
+        .unwrap()
 }
-

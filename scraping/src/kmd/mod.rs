@@ -1,6 +1,9 @@
-use std::error::{Error};
+use std::error::Error;
+
 use scraper::{Html, Selector};
+
 use dal::models::{District, SuperDistrictEntity, SuperDistrictInput};
+
 use crate::download::download;
 
 pub async fn scrape() -> Result<(), Box<dyn Error>> {
@@ -53,19 +56,17 @@ fn parse_main_page(document: &str) -> Vec<SuperDistrictInput> {
                 .and_then(|n| n.text().next())
                 .unwrap_or("Title not found");
 
-            let element_links = element
-                .select(&selector_href);
+            let element_links = element.select(&selector_href);
 
             SuperDistrictInput {
                 name: element_title.to_string(),
                 sub_districts: element_links
                     .into_iter()
-                    .map(|link| {
-                        District {
-                            name: link.text().next().unwrap().trim().to_string(),
-                            link: link.value().attr("href").unwrap().to_string()
-                        }
-                    }).collect::<Vec<District>>()
+                    .map(|link| District {
+                        name: link.text().next().unwrap().trim().to_string(),
+                        link: link.value().attr("href").unwrap().to_string(),
+                    })
+                    .collect::<Vec<District>>(),
             }
         })
         .collect::<Vec<SuperDistrictInput>>()

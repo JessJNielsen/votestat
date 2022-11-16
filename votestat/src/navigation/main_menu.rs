@@ -18,10 +18,10 @@ impl FromStr for MainMenuOption {
 
     fn from_str(input: &str) -> Result<MainMenuOption, Self::Err> {
         match input {
-            "Scrape"  => Ok(MainMenuOption::Scrape),
-            "Read"  => Ok(MainMenuOption::Read),
-            "Export"  => Ok(MainMenuOption::Analyze),
-            _      => Err(()),
+            "Scrape" => Ok(MainMenuOption::Scrape),
+            "Read" => Ok(MainMenuOption::Read),
+            "Export" => Ok(MainMenuOption::Analyze),
+            _ => Err(()),
         }
     }
 }

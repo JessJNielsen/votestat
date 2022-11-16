@@ -1,4 +1,5 @@
 use chrono::NaiveDateTime;
+
 use crate::database::connect_database;
 
 #[derive(Debug)]
@@ -40,7 +41,7 @@ impl SuperDistrictEntity {
 #[derive(Debug)]
 pub struct District {
     pub name: String,
-    pub link: String
+    pub link: String,
 }
 
 // Plan
