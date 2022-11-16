@@ -1,11 +1,14 @@
-extern crate votestat;
+extern crate scraping;
+extern crate dal;
+
+mod navigation;
 
 use dotenvy::dotenv;
 use inquire::Select;
 
-use votestat::navigation::main_menu::{MainMenuOption};
-use votestat::scraping::kmd::scrape;
-use votestat::database;
+use navigation::main_menu::{MainMenuOption};
+use scraping::kmd::scrape;
+use dal::database;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

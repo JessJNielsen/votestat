@@ -1,7 +1,7 @@
 use std::error::{Error};
 use scraper::{Html, Selector};
-use crate::models::{District, SuperDistrictEntity, SuperDistrictInput};
-use crate::scraping::download::download;
+use dal::models::{District, SuperDistrictEntity, SuperDistrictInput};
+use crate::download::download;
 
 pub async fn scrape() -> Result<(), Box<dyn Error>> {
     println!("Initializing scraping for KMD data.. \n");

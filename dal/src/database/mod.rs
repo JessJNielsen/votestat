@@ -17,7 +17,7 @@ pub async fn initialize() -> Result<(), Box<dyn std::error::Error>> {
     let sqlite_pool = connect_database().await;
 
     // Migrate the database
-    migrate!().run(&sqlite_pool).await?;
+    migrate!("./migrations").run(&sqlite_pool).await?;
 
     Ok(())
 }
