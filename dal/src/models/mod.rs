@@ -1,48 +1,35 @@
-use chrono::NaiveDateTime;
+use async_trait::async_trait;
 
-use crate::database::connect_database;
+pub mod district;
+pub mod super_district;
 
-#[derive(Debug)]
-pub struct SuperDistrictInput {
-    pub name: String,
-    pub sub_districts: Vec<District>,
+#[async_trait]
+pub trait Insert<Input> {
+    type Output;
+
+    async fn insert(input: &Input) -> anyhow::Result<Option<Self::Output>>;
 }
 
-#[derive(Debug)]
-pub struct SuperDistrictEntity {
-    pub super_district_id: i64,
-    pub name: String,
-    pub created_at: NaiveDateTime,
+#[async_trait]
+trait Update<Input> {
+    type Output;
+
+    async fn update(input: Input) -> Self::Output;
 }
 
-impl SuperDistrictEntity {
-    pub async fn insert(input: &SuperDistrictInput) -> anyhow::Result<Option<SuperDistrictEntity>> {
-        let new_super_district: Option<SuperDistrictEntity> = sqlx::query_as!(
-            SuperDistrictEntity,
-            r#"
-                INSERT OR IGNORE INTO super_districts (name)
-                VALUES ($1)
-                RETURNING
-                super_district_id as "super_district_id!",
-                name as "name!",
-                created_at as "created_at!"
-            "#,
-            input.name,
-        )
-        .fetch_optional(&connect_database().await)
-        .await?;
+#[async_trait]
+trait Delete<Input> {
+    type Output;
 
-        println!("new_super_district {:?}", &new_super_district);
-
-        Ok(new_super_district)
-    }
+    async fn delete(input: Input) -> Self::Output;
 }
 
-#[derive(Debug)]
-pub struct District {
-    pub name: String,
-    pub link: String,
-}
+// #[async_trait]
+// trait Get<Rhs = Self> {
+//     type Output;
+//
+//     async fn get(self, rhs: Rhs) -> Self::Output;
+// }
 
 // Plan
 

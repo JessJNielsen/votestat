@@ -7,5 +7,8 @@ edition = "2021"
 
 [dependencies]
 dal = { path = "../dal" }
+utils = { path = "../utils" }
 reqwest = { version = "0.11", features = ["json"] }
 scraper = "0.13.0"
+anyhow = "1.0"
+async-trait = "0.1"
