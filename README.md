@@ -9,9 +9,10 @@ Then you can either do simple analysis or export it for more detailed analysis.
 
 The project has been split into smaller library crates:
 
-- `dal` - Database and Models, anything that uses `sqlx`
-- `scraping` - Scraping function in VoteStat cli. Includes KMD logic.
-- `votestat` - The main CLI application
+- `dal` - Database and Entities, anything that uses `sqlx`. Includes SQL migrations.
+- `scraping` - Scraping function in VoteStat CLI. Includes KMD provider logic.
+- `utils` - Various shared utilities. Includes the `Context`
+- `votestat` - The main Votestat CLI application
 
 ## Terms
 
