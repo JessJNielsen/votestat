@@ -1,17 +1,17 @@
 [package]
-name = "dal"
+name = "domain"
 version = "0.1.0"
 edition = "2021"
+
+[lib]
+name = "domain"
+path = "src/lib.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-sqlx = { version = "0.6", features = [
-    "runtime-tokio-rustls",
-    "sqlite",
-    "chrono",
-    "uuid"
-] }
+database = { path = "../database" }
+sea-orm = { version = "^0", features = [ "sqlx-sqlite", "runtime-tokio-native-tls", "macros" ] }
 chrono = "0.4"
 anyhow = "1.0"
 async-trait = "0.1"

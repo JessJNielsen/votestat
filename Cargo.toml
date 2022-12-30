@@ -1,6 +1,7 @@
 [workspace]
 members = [
+#    "migration",
+    "domain",
     "votestat",
-    "dal",
     "scraping"
 ]

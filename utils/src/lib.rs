@@ -1,5 +1,5 @@
-use dal::Service;
+use domain::elections::ElectionService;
 
 pub struct Context {
-    pub dal_service: Service,
+    pub election_service: ElectionService,
 }

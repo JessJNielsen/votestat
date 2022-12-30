@@ -1,8 +1,7 @@
-extern crate dal;
 extern crate scraping;
 extern crate utils;
 
-use dal::database;
+use database;
 use dotenvy::dotenv;
 use inquire::Select;
 use navigation::main_menu::MainMenuOption;
@@ -50,15 +49,16 @@ Then you can either do simple analysis or export it for more detailed analysis.
 ///
 /// Returns a Context object
 async fn initialize_db_and_context() -> Context {
-    let db_conn = database::connect()
+    let db: database::DatabaseConnection = database::database::connect()
         .await
         .expect("Could not connect to Database");
 
-    database::migrate(&db_conn)
+    database::database::migrate(&db)
         .await
         .expect("Failed to migrate Database");
 
-    let dal_service = dal::Service::new(db_conn.clone());
+    // TODO: replace with shaku dependency injection setup for better decoupling
+    let election_service = domain::elections::ElectionService::new(db.clone());
 
-    Context { dal_service }
+    Context { election_service }
 }

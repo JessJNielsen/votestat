@@ -10,9 +10,7 @@ pub mod kmd_provider;
 pub async fn run_scraping_tools(votestat_context: Context) {
     // TODO: Switch between KMD and other providers
 
-    let scraper = Scraper::new(KMDProvider);
-
-    scraper
+    Scraper::new(KMDProvider)
         .scrape(&votestat_context)
         .await
         .expect("TODO: Message for failed scrape")
