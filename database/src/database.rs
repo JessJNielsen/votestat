@@ -13,10 +13,3 @@ pub async fn connect() -> anyhow::Result<DatabaseConnection> {
 
     Ok(db)
 }
-
-pub async fn migrate(database: &DatabaseConnection) -> anyhow::Result<()> {
-    // TODO: Add migration pkg or access from the migration library
-    // Migrator::up(database, None).await?;
-
-    Ok(())
-}

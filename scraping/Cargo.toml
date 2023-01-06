@@ -9,7 +9,7 @@ edition = "2021"
 domain = { path = "../domain" }
 utils = { path = "../utils" }
 reqwest = { version = "0.11", features = ["json"] }
-scraper = "0.13.0"
+scraper = "0.14.0"
 anyhow = "1.0"
 async-trait = "0.1"
 chrono = "0.4"

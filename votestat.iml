@@ -9,6 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/utils/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/database/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/domain/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/errors/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/migration/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>

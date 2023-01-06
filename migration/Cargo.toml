@@ -4,12 +4,13 @@ version = "0.1.0"
 edition = "2021"
 publish = false
 
-[lib]
-name = "migration"
-path = "src/lib.rs"
+#[lib]
+#name = "migration"
+#path = "src/lib.rs"
 
 [dependencies]
 async-std = { version = "^1", features = ["attributes", "tokio1"] }
+domain = { path = "../domain" }
 
 [dependencies.sea-orm-migration]
 version = "^0.10.0"

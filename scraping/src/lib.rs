@@ -7,13 +7,12 @@ use utils::Context;
 pub mod download;
 pub mod kmd_provider;
 
-pub async fn run_scraping_tools(votestat_context: Context) {
+pub async fn run_scraping_tools(votestat_context: Context) -> anyhow::Result<()> {
     // TODO: Switch between KMD and other providers
 
-    Scraper::new(KMDProvider)
-        .scrape(&votestat_context)
-        .await
-        .expect("TODO: Message for failed scrape")
+    Scraper::new(KMDProvider).scrape(&votestat_context).await?;
+
+    Ok(())
 }
 
 // Provider traits and structs, technically a strategy pattern

@@ -1,11 +1,12 @@
 extern crate scraping;
 extern crate utils;
 
-use database;
 use dotenvy::dotenv;
 use inquire::Select;
+use migration::{Migrator, MigratorTrait};
 use navigation::main_menu::MainMenuOption;
 use scraping::run_scraping_tools;
+use std::env;
 use utils::Context;
 
 mod navigation;
@@ -13,6 +14,7 @@ mod navigation;
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     dotenv().ok();
+    env::set_var("RUST_BACKTRACE", "1");
 
     println!(
         r#"
@@ -37,7 +39,7 @@ Then you can either do simple analysis or export it for more detailed analysis.
     };
 
     match selected_main_menu_option.unwrap() {
-        MainMenuOption::Scrape => run_scraping_tools(votestat_context).await,
+        MainMenuOption::Scrape => run_scraping_tools(votestat_context).await?,
         MainMenuOption::Read => println!("TODO: Implement Read"),
         MainMenuOption::Analyze => println!("TODO: Implement Read"),
     }
@@ -53,12 +55,13 @@ async fn initialize_db_and_context() -> Context {
         .await
         .expect("Could not connect to Database");
 
-    database::database::migrate(&db)
+    Migrator::up(&db, None)
         .await
         .expect("Failed to migrate Database");
 
     // TODO: replace with shaku dependency injection setup for better decoupling
-    let election_service = domain::elections::ElectionService::new(db.clone());
-
-    Context { election_service }
+    Context {
+        election_service: domain::elections::ElectionService::new(db.clone()),
+        voting_district_service: domain::voting_districts::VotingDistrictService::new(db.clone()),
+    }
 }

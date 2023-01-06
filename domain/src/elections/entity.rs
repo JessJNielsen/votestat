@@ -2,7 +2,7 @@
 
 use sea_orm::entity::prelude::*;
 
-#[derive(Clone, Debug, PartialEq, EnumIter, DeriveActiveEnum)]
+#[derive(Copy, Clone, Debug, PartialEq, EnumIter, DeriveActiveEnum)]
 #[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "election_type")]
 pub enum ElectionType {
     #[sea_orm(string_value = "Parliament")]
